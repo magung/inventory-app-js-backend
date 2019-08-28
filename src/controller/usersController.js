@@ -32,7 +32,8 @@ module.exports = {
 
         modelUsers.loginUser(email, password)
         .then(result=>{
-            if(result.length !== 0){
+            
+            if(result.affectedRows !== 0){
                 const jwt =require('jsonwebtoken')
                 const load = {
                     username: result[0].username,
@@ -50,6 +51,7 @@ module.exports = {
         })
         .catch(err=>{
             console.log(err)
+            return response.dataManipulation(res, 201, "Failed Login user")
         })
     },
     updateUser:(req, res)=>{
