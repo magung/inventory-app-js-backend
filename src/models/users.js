@@ -10,9 +10,9 @@ module.exports = {
 
         })
     },
-    loginUser:(email, password)=>{
+    loginUser:(email)=>{
         return new Promise((resolve, reject)=>{
-            connection.query(`SELECT * FROM users WHERE email = ? AND password = ?`, [email, password], (err, result)=>{
+            connection.query(`SELECT * FROM users WHERE email = ?`, [email], (err, result)=>{
                 if(!err){resolve(result)}else{reject(err)}
             })
         })

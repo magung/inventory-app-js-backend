@@ -17,10 +17,11 @@ var routeProducts =require('./src/routes/products');
 var routeCategories= require('./src/routes/categories');
 var routeUsers = require('./src/routes/users');
 //url
-app.use('/', routes);
+
 app.use('/products', routeProducts);
 app.use('/categories', routeCategories);
 app.use('/user', routeUsers);
+app.use('/', routes);
 
 app.post('/login', (req, res) =>{
     const user = {

@@ -5,6 +5,8 @@ const modelCategories = require('../models/categories')
 
 //CRUD Categories
 module.exports = {
+
+    //CREATE
     insertCategories: (req, res) =>{
         const data = {
             id : req.body.id,
@@ -19,20 +21,42 @@ module.exports = {
         })
         .catch(err => {
             console.log(err)
-            response.dataManipulation(res, 201, "Failed to insert category")
+            response.dataManipulation(res, 400, "Failed to insert category")
         })
     },
+
+    //READ
     getCategories:(req, res)=>{
         const sortBy = req.query.sortBy || 'id';
 		const sort = req.query.sort || 'ASC';
 		const limit = parseInt(req.query.limit) || 10;
-		const page = (parseInt(req.query.page)-1)* limit || 0;
+        const page = req.query.page || 1;
+        const skip = (parseInt(page)-1)* limit;
+        const search = req.query.search;
 
-
-        modelCategories.getCategories(sortBy, sort,page, limit)
-        .then(result => res.json(result))
+        modelCategories.getCategories(search, sortBy, sort, skip, limit)
+        .then(result => {
+            if(result.length !== 0) return response.getDataResponse(res, 200, result, result.length, page )
+			else return response.getDataResponse(res, 404, null, null, null, "Data not Found")
+        })
         .catch(err => console.log(err))
     },
+
+    // READ - get one category search by ID or by NAME
+    searchCategory: (req, res)=>{
+        const id = req.params.id;
+        modelCategories.searchCategory(id)
+        .then(result => {
+            if(result.length !== 0) return response.ok(result, res)
+            else return response.dataManipulation(res,404, "Data not found")
+        })
+        .catch(err => {
+            console.log(err)
+            return response.dataManipulation(res, 500, err)
+        })
+    },
+
+    //UPDATE
     updateCategory:(req, res)=>{
         const id = req.params.id
         const data = {
@@ -47,12 +71,14 @@ module.exports = {
         })
         .catch(err => console.log(err))
     },
+
+    //DELETE
     deleteCategory:(req, res) => {
         const id = req.params.id
         modelCategories.deleteCategory(id)
         .then(result => {
             result.id = id
-            if(result.affectedRows !== 0) return response.dataManipulation(res, 400, "Success deleting category")
+            if(result.affectedRows !== 0) return response.dataManipulation(res, 200, "Success deleting category")
             else return response.dataManipulation(res, 404, "Failed to delete category or Not Found")
         })
         .catch(err => {
@@ -60,18 +86,8 @@ module.exports = {
             return response.dataManipulation(res, 500, err)
         })
     },
-    searchCategory: (req, res)=>{
-        const id = req.params.id;
-        modelCategories.searchCategory(id)
-        .then(result => {
-            if(result.length !== 0) return response.ok(result, res)
-            else return response.ok("Data not found", res)
-        })
-        .catch(err => {
-            console.log(err)
-            return response(err, res)
-        })
-    }
+
+    
 }
 
 // exports.categories = function(req, res){

@@ -3,6 +3,7 @@ const response = require('../res')
 require('dotenv').config();
 
 module.exports = {
+
     regUser: (req, res)=>{
         const data = {
             name : req.body.name,
@@ -20,33 +21,41 @@ module.exports = {
             return response.dataManipulation(res, 201, "Failed register user")
         })
     },
+
     allUsers:(req, res)=>{
         modelUsers.allUsers()
         .then(result=>res.json(result))
         .catch(err=>console.log(err))
     },
+
     loginUser: (req, res)=>{
         const email = req.body.email;
         const password = req.body.password;
         //console.log(hashedPassword)
 
-        modelUsers.loginUser(email, password)
+        modelUsers.loginUser(email)
         .then(result=>{
             
-            if(result.affectedRows !== 0){
-                const jwt =require('jsonwebtoken')
-                const load = {
-                    username: result[0].username,
-                    email: result[0].email
+            if(result.length !== 0){
+                if(result[0].password == password){
+                    const jwt =require('jsonwebtoken')
+                    const load = {
+                        username: result[0].username,
+                        email: result[0].email
+                    }
+    
+                    jwt.sign(load, process.env.JWT_SECRET,{expiresIn: '20m'}, (err, token)=>{
+                        if(!err){
+                            res.json({
+                                dataUser:load,
+                                token: `Baerer ${token}`})
+                        }else{console.log(err)}
+                    })
+                }else{
+                    return response.dataManipulation(res, 400, "Email and Password doesnt match")
                 }
-
-                jwt.sign(load, process.env.JWT_SECRET,{expiresIn: '300s'}, (err, token)=>{
-                    if(!err){
-                        res.json({
-                            dataUser:result,
-                            token: `Baerer ${token}`})
-                    }else{console.log(err)}
-                })
+            }else{
+                return response.dataManipulation(res, 400, "Email doesnt exist")
             }
         })
         .catch(err=>{
@@ -54,6 +63,7 @@ module.exports = {
             return response.dataManipulation(res, 201, "Failed Login user")
         })
     },
+
     updateUser:(req, res)=>{
         const id = req.params.id
         const data={
