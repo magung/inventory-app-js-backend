@@ -1,7 +1,7 @@
 # RESTful API Inventory App
 ![](https://img.shields.io/badge/Code%20Style-Standard-yellow.svg)
 ![](https://img.shields.io/badge/Dependencies-Express-green.svg)
-![](https://img.shields.io/badge/License-ISC-yellowgreen.svg)
+![](https://img.shields.io/npm/v/npm.svg)
 [![Node.js](https://img.shields.io/badge/Node.js-v.10.16-green.svg?style=rounded-square)](https://nodejs.org/)
 <p align="center">
   <a href="https://nodejs.org/">
@@ -66,10 +66,12 @@ $ npm start
   
 #### PATCH Request
 - "/products/update/{id_product}" => Updating a product in database. data required = id_product, name, description, image, id_category, quantity.
-- "/product/{id_product}" => Choose products with id_product to add and reduce the quantity of these products.
+- "/product/{id_product}" => Choose products with id_product to add and reduce the quantity of these products. Query params:
+	- "act" -> Choose add or reduce,
+	- "value" -> The value you want to add or reduce
 
 #### DELETE Request
-- "/prducts/{id_product}" => Deleting a product in database. data required = id_product.
+- "/prducts/{id_product}" => Delete a product in database. data required = id_product.
 
 ### Categories Routes
 #### GET Request
