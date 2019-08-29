@@ -71,6 +71,26 @@ $ npm start
 #### DELETE Request
 - "/prducts/{id_product}" => Deleting a product in database. data required = id_product.
 
+### Categories Routes
+#### GET Request
+- "/categories" => displays all categories, with default pagination {page:1, limit:10}. Query params:
+  - "search" -> displays all categories with name category or id that constains the keyword, 
+  - "sortBy" -> its value is name of column you want to sort,
+  - "sort" -> its filtering your ascending or descending,
+  - "limit" -> number of products displayed in a page (default 10),
+  - "page" -> page to display (default 1).
+- "/categories/{id}" = search category by id or name of category and displays all categories that contains the keyword in the search.
+
+#### POST Request
+- "/categories" => Inserting a category to database. data required = id, category.
+
+#### PATCH Request
+- "/categories/{id}" => Updating a categoriy in database. data required = id, category.
+
+#### DELETE Request
+- "/categories/{id_product}" => Deleting a product in database. data required = id_product.
+
+
 
 
  
