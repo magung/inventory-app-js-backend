@@ -8,14 +8,14 @@ module.exports = {
 	
 	//CREATE
 	insertProducts:function(req,res){
-		const {name, description, image, quantity, id_category} = req.body;
+		const {name, description, image, quantity, category} = req.body;
 		const date = new Date();
 		const data={
 			name: name,
 			description: description,
 			image: image,
 			quantity: quantity,
-			id_category: id_category,
+			id_category: category,
 			date_added: date,
 			date_updated: date
 		}
@@ -33,6 +33,12 @@ module.exports = {
 	
 	//READ
 	allProducts:(req, res)=>{
+		connection.query(`SELECT COUNT(*) as total_data FROM products`, (err,result)=>{
+			if(!err){
+				console.log(result)
+				
+			}
+		})
 		var sortBy = req.query.sortBy || 'id';
 		var sort = req.query.sort || 'ASC';
 		var search = req.query.search
@@ -44,7 +50,7 @@ module.exports = {
 		}else{
 			res.send("Wrong Value")
 		}
-
+		
 		modelProduct.allProduct(search, sortBy, sort, skip, limit)
 		.then(result => {
 			if(result.length !== 0) return response.getDataResponse(res, 200, result, result.length, page )

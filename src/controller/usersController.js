@@ -5,9 +5,15 @@ require('dotenv').config();
 const isFormFalid = (data)=>{
     const Joi = require('@hapi/joi')
     const schema = Joi.object().keys({
+        name: Joi.string(),
         username: Joi.string().alphanum().min(3).max(30).required(),
-        
+        email: Joi.string().email({ minDomainSegments: 2 }),
+        password: Joi.string(),
+        level:  Joi.string()
     })
+    const result = Joi.validate(data, schema)
+    if (result.error == null) return true
+    else return false
 }
 
 const hash = (string) => {
@@ -29,6 +35,10 @@ module.exports = {
         }
 
         data.password = hash(data.password)
+
+        if(!isFormFalid(data)){
+            return response.dataManipulation(res, 200, "Data not valid")
+        }
 
         modelUsers.regUser(data)
         .then(result=>{
