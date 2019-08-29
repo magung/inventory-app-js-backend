@@ -3,7 +3,11 @@ const response = require('../res')
 require('dotenv').config();
 
 const isFormFalid = (data)=>{
-    
+    const Joi = require('@hapi/joi')
+    const schema = Joi.object().keys({
+        username: Joi.string().alphanum().min(3).max(30).required(),
+        
+    })
 }
 
 const hash = (string) => {

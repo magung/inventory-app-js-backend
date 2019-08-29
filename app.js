@@ -60,3 +60,21 @@ app.post('/login', (req, res) =>{
 
 app.listen(port);
 console.log("Started on server http://localhost:"+port);
+
+const Joi = require('@hapi/joi');
+ 
+// const schema = {
+//     a: Joi.string()
+// };
+// const result = Joi.validate({ a: "3" }, schema)
+// if (result.error == null) return console.log("valid")
+// else return console.log("invalid")
+ 
+// Joi.validate({ a: 3 }, schema, function (error, value) { 
+//     if(!error){
+//         console.log("valid")
+//         console.log(value)
+//     }else{
+//         console.log("invalid")
+//     }
+// });
