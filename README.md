@@ -69,7 +69,7 @@ $ npm start
 - "/product/{id_product}" => Choose products with id_product to add and reduce the quantity of these products.
 
 #### DELETE Request
-- "/prducts/{id_product}" => Deleting a product in database. data required = id_product.
+- "/prducts/{id_product}" => Delete a product in database. data required = id_product.
 
 ### Categories Routes
 #### GET Request
