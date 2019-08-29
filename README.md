@@ -1,7 +1,7 @@
 # RESTful API Inventory App
 ![](https://img.shields.io/badge/Code%20Style-Standard-yellow.svg)
 ![](https://img.shields.io/badge/Dependencies-Express-green.svg)
-![](https://img.shields.io/badge/License-ISC-yellowgreen.svg)
+![](https://img.shields.io/npm/v/npm.svg)
 [![Node.js](https://img.shields.io/badge/Node.js-v.10.16-green.svg?style=rounded-square)](https://nodejs.org/)
 <p align="center">
   <a href="https://nodejs.org/">
