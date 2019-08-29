@@ -19,3 +19,11 @@ var con = mysql.createConnection({
 // });
 
 module.exports = con;
+// con.connect((err)=>{
+//     if(!err){
+//       console.log("database connect")
+//     }else{
+//       console.log(err)
+//       console.log("database eror")
+//     }
+//   })

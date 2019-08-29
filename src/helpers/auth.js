@@ -20,6 +20,11 @@ module.exports = {
                 const decoded = jwt.verify(token, process.env.JWT_SECRET)
                 if(decoded){
                     console.log(decoded)
+                    req.id = decoded.id
+                    req.name = decoded.name
+                    req.username = decoded.username
+                    req.email = decoded.email
+                    req.level = decoded.level
                     next()
                 }else { throw new Error(decoded) }
             }catch(err){
@@ -30,5 +35,8 @@ module.exports = {
             //Forbiddden
             res.sendStatus(403)
         }
+    },
+    verifyAdmin: (req, res, next) => {
+        if (req.level === 'admin') { next() } else { res.sendStatus(403) }
     }
 }
