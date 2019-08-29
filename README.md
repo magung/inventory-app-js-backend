@@ -22,9 +22,37 @@
 ## Installation
 ### Clone
 ```
-$ git clone https://github.com/magung/inventory-app-js-beckend.git
-$ cd JS-BackendRentBookApp
+$ git clone https://github.com/magung/inventory-app-js-backend.git
+$ cd js-backend-inventory
 $ npm install
 ```
+### Create Environment Variable
+```
+$ cp .envexample .env
+$ nano .env
+```
+
+```
+SERVER_PORT = YOUR-PORT
+
+DB_HOST = "YOU-DB-HOST"
+DB_USER = "YOUR-DB-USER"
+DB_PASSWORD = "YOUR-DB-PASSWORD"
+DB_NAME = "YOUR-DB-NAME"
+
+JWT_SECRET = "YOUR-SECRET"
+```
+### Start Development Server
+```
+$ npm start
+```
+
 ## Documentation
 ### Products Routes
+#### GET Request
+- "/products" => display all products, with default pagination {page:1, limit:10}. Query params:
+  - "search" -> display all products with name product that constains the keyword, 
+  - "sortBy" -> its value is name of column you want to sort,
+  - "sort" -> its filtering your ascending or descending,
+  - "limit" -> number of products displayed in a page (default 10),
+  - "page" -> page to display (default 1).
