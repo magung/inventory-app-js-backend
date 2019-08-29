@@ -2,6 +2,10 @@ const modelUsers = require('../models/users')
 const response = require('../res')
 require('dotenv').config();
 
+const isFormFalid = (data)=>{
+    
+}
+
 const hash = (string) => {
     const crypto = require('crypto-js')
     return crypto.SHA256(string)
