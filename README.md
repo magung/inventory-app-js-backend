@@ -10,13 +10,21 @@
 </p>
 
 ----
-## Contens
+## Table of contens
 * [Prerequiste](#prerequiste)
+* [Installation](#installation)
 * [Documentation](#documentation)
-## prerequiste
+## Prerequiste
 - Node.js - Download and Install [Node.js](https://nodejs.org/en/) with [NVM](https://github.com/creationix/nvm) (Node Version Manager) - Simple bash script to manage multiple active node.js versions.
 - MySQL - Download and Install [MySQL](https://www.mysql.com/downloads/) - Make sure it's running on the default port.
 - Postman - Download and Install [Postman](https://www.getpostman.com/downloads) - Implementation with postman latest version.
 
+## Installation
+### Clone
+```
+$ git clone https://github.com/magung/inventory-app-js-beckend.git
+$ cd JS-BackendRentBookApp
+$ npm install
+```
 ## Documentation
 ### Products Routes
