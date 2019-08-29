@@ -7,8 +7,9 @@ var Auth = require('../helpers/auth')
 
 Route
 .post('/register', usersController.regUser)
+.post('/register/admin', Auth.verifyToken, Auth.verifyAdmin, usersController.regAdmin)
 .post('/login', usersController.loginUser)
-.get('/', usersController.allUsers)
-.put('/:id', usersController.updateUser)
+.get('/', Auth.verifyToken, Auth.verifyAdmin, usersController.allUsers)
+.put('/:id', Auth.verifyToken, Auth.verifyAdmin, usersController.updateUser)
 .delete('/:id', Auth.verifyToken, Auth.verifyAdmin, usersController.deleteUser)
  module.exports = Route

@@ -1,3 +1,4 @@
+'use strict';
 const jwt = require('jsonwebtoken')
 require('dotenv').config();
 module.exports = {
@@ -12,7 +13,7 @@ module.exports = {
             const bearer = bearerHeader.split(' ')
             // get token from array
             const bearerToken = bearer[1];
-            // set the token
+            // set the token 
             const token = bearerToken
             //next middleware
             

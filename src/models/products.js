@@ -1,3 +1,4 @@
+'use strict';
 const connection = require('../database/conn')
 
 module.exports = {
@@ -20,6 +21,7 @@ module.exports = {
     },
     allProduct:(search, sortBy, sort, skip, limit) =>{
         return new Promise((resolve, reject) => {
+            
             let query = 'SELECT products.id_product as id, products.name as name, products.description , products.image, categories.category as category, products.quantity as quantity, products.date_added, products.date_updated as date_updated FROM products join categories on products.id_category = categories.id ';
             if(search){
                 query += `WHERE name like "%${search}%" `;

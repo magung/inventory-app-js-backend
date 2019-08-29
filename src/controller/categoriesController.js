@@ -66,7 +66,7 @@ module.exports = {
         modelCategories.updateCategory(id, data)
         .then(result => {
             data.id = id
-            if(result.affectedRows !== 0) return response.dataManipulation(res, 200, "Succes updating category")
+            if(result.affectedRows !== 0) return response.dataManipulation(res, 200, "Succes updating category ", data)
             else return response.dataManipulation(res, 201, "Failed to update category")
         })
         .catch(err => console.log(err))
@@ -78,7 +78,7 @@ module.exports = {
         modelCategories.deleteCategory(id)
         .then(result => {
             result.id = id
-            if(result.affectedRows !== 0) return response.dataManipulation(res, 200, "Success deleting category")
+            if(result.affectedRows !== 0) return response.dataManipulation(res, 200, "Success deleting category with id : "+id)
             else return response.dataManipulation(res, 404, "Failed to delete category or Not Found")
         })
         .catch(err => {
@@ -89,54 +89,3 @@ module.exports = {
 
     
 }
-
-// exports.categories = function(req, res){
-//     connection.query('SELECT * FROM categories',  function(error, rows, field){
-//         if (error) {
-// 			console.log(error);
-// 		} else {
-// 			response.ok(rows, res);
-// 		}
-//     })
-// }
-// exports.insertCategories = function(req, res){
-//     const {id, category} =req.body;
-//     connection.query('INSERT into categories set id = ?, category = ?',[id, category],  function(error, rows, field){
-//         if (error) {
-// 			console.log(error);
-// 		} else {
-// 			response.ok("Category "+ category +" success to added", res);
-// 		}
-//     })
-// }
-// exports.deleteCategory = function(req, res){
-//     const id =req.params.id;
-//     connection.query('DELETE FROM categories where id = ?',[id],  function(error, rows, field){
-//         if (error) {
-// 			console.log(error);
-// 		} else {
-// 			response.ok("Category with id : "+ id +" success to delete", res);
-// 		}
-//     })
-// }
-// exports.updateCategory = function(req, res){
-//     const id = req.params.id;
-//     const category =req.body.category;
-//     connection.query('UPDATE categories set category = ? WHERE id = ?',[category, id],  function(error, rows, field){
-//         if (error) {
-// 			console.log(error);
-// 		} else {
-// 			response.ok("Category "+ category +" success to updated", res);
-// 		}
-//     })
-// }
-// exports.searchCategory = function(req, res){
-//     const id = req.params.id;
-//     connection.query('SELECT * FROM categories WHERE category = ? or id = ?',[id, id],  function(error, rows, field){
-//         if (error) {
-// 			console.log(error);
-// 		} else {
-// 			response.ok(rows, res);
-// 		}
-//     })
-// }

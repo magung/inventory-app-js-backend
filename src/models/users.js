@@ -1,3 +1,4 @@
+'use strict';
 const connection = require('../database/conn')
 
 module.exports = {
@@ -10,6 +11,7 @@ module.exports = {
 
         })
     },
+
     loginUser:(email)=>{
         return new Promise((resolve, reject)=>{
             connection.query(`SELECT * FROM users WHERE email = ?`, [email], (err, result)=>{
@@ -17,6 +19,7 @@ module.exports = {
             })
         })
     },
+
     allUsers:()=>{
         return new Promise((resolve, reject)=>{
             connection.query(`SELECT * FROM users`, (err, result)=>{
@@ -24,6 +27,7 @@ module.exports = {
             })
         })
     },
+
     udateUser:(data, id)=>{
         return new Promise((resolve, reject)=>{
             connection.query(`UPDATE users set ? WHERE id = ? `, [data, id], (err, result)=>{
@@ -31,6 +35,7 @@ module.exports = {
             })
         })
     },
+
     deleteUser:(id)=>{
         return new Promise((resolve, reject)=>{
             connection.query(`DELETE FROM users WHERE id = ?`, id, (err, result)=>{

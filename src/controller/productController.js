@@ -33,16 +33,23 @@ module.exports = {
 	
 	//READ
 	allProducts:(req, res)=>{
-		connection.query(`SELECT COUNT(*) as total_data FROM products`, (err,result)=>{
-			if(!err){
-				console.log(result)
-				
-			}
-		})
+		let total = ''
 		var sortBy = req.query.sortBy || 'id';
 		var sort = req.query.sort || 'ASC';
 		var search = req.query.search
-		
+
+		if(search){
+		connection.query(`SELECT COUNT(*) as total_data FROM products WHERE name like "%${search}%"`, (err,result)=>{
+			if(!err){
+				 total = result
+			}
+		})}else{
+			connection.query(`SELECT COUNT(*) as total_data FROM products `, (err,result)=>{
+				if(!err){
+					 total = result
+				}})
+		}
+
 		if((isNaN(Number(req.query.page)) === false && isNaN(Number(req.query.limit)) === false) || !req.query.page || !req.query.limit){
 			var limit = Number(req.query.limit) || 10;
 			var page = req.query.page || 1;
@@ -53,7 +60,7 @@ module.exports = {
 		
 		modelProduct.allProduct(search, sortBy, sort, skip, limit)
 		.then(result => {
-			if(result.length !== 0) return response.getDataResponse(res, 200, result, result.length, page )
+			if(result.length !== 0) return response.getDataWithTotals(res, 200, result, result.length, page, total )
 			else return response.getDataResponse(res, 404, null, null, null, "Data not Found")
 		})
 		.catch(err => console.log(err))
@@ -92,7 +99,7 @@ module.exports = {
 		.then(result => {
 			data.id_product = id_product
 			if(result.affectedRows !== 0) return response.dataManipulation(res, 200, 'Success updating product', data )
-			else return response.dataManipulation(res, 200, "Failed updated", data)
+			else return response.dataManipulation(res, 200, "Failed updated")
 		})
 		.catch(err => {
 			console.log(err)
@@ -106,7 +113,7 @@ module.exports = {
 		modelProduct.deleteProduct(id_product)
 		.then(result =>{
 			result.id_product = id_product
-			if(result.affectedRows !== 0) return response.dataManipulation(res, 200, "Success deleting data product")
+			if(result.affectedRows !== 0) return response.dataManipulation(res, 200, "Success deleting data product with id : "+id_product)
 			else return response.dataManipulation(res, 400, "Failed deleted, Data not found")
 		})
 		.catch(err =>{
@@ -129,7 +136,7 @@ module.exports = {
 				result.id_category = id_product
 				res.status(200).json({
 					status:200,
-					message: "Succes to " + act + " " + value +" product",
+					message: "Succes to " + act + " " + value +" product with id : " +id_product,
 					
 				})
 			}

@@ -1,5 +1,14 @@
 'use strict';
 module.exports = {
+    getDataWithTotals: (res, statuscode, values, totalvalues, page, total) => {
+        return res.json({
+          status: statuscode,
+          data: values,
+          limit: totalvalues,
+          page: page,
+          total
+        })
+      },
     getDataResponse: (res, statuscode, values, totalvalues, page, message) => {
         return res.json({
           status: statuscode,

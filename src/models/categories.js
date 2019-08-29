@@ -1,8 +1,9 @@
+'use strict';
 const connection = require('../database/conn')
 
 module.exports = {
 
-    //CREATE
+    //CREATE 
     insertCategory: (data) =>{
         return new Promise((resolve, reject)=>{
             connection.query(`INSERT INTO categories SET ?`, data, (err, result) => {

@@ -8,7 +8,6 @@ const err = require('../controller/controller')
 
 Route
  // url pages and implementation routes
-
  .get('/', productController.allProducts)
  .get('/:name',productController.searchProducts)
  .post('/',Auth.verifyToken, productController.insertProducts)

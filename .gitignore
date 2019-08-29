@@ -1,3 +1,4 @@
 node_modules/
 .env
 *-lock.json
+src/nicks-cors-test

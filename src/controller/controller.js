@@ -1,6 +1,5 @@
 'use strict';
 
-var connection = require('../database/conn');
 var response = require('../res');
 
 exports.index = function(req, res) {

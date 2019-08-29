@@ -1,3 +1,4 @@
+'use strict';
 const modelUsers = require('../models/users')
 const response = require('../res')
 require('dotenv').config();
@@ -48,6 +49,32 @@ module.exports = {
         .catch(err=>{
             console.log(err)
             return response.dataManipulation(res, 201, "Failed register user")
+        })
+    },
+
+    regAdmin: (req, res)=>{
+        const data = {
+            name : req.body.name,
+            username : req.body.username,
+            email : req.body.email,
+            password : req.body.password,
+            level: 'admin'
+        }
+
+        data.password = hash(data.password)
+
+        if(!isFormFalid(data)){
+            return response.dataManipulation(res, 200, "Data not valid")
+        }
+
+        modelUsers.regUser(data)
+        .then(result=>{
+            data.id = result.id
+            return response.dataManipulation(res, 200, "Success register admin", data)
+        })
+        .catch(err=>{
+            console.log(err)
+            return response.dataManipulation(res, 201, "Failed register admin")
         })
     },
 
