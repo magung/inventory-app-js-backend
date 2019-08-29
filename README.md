@@ -7,9 +7,16 @@
   <a href="https://nodejs.org/">
     <img alt="restfulapi" title="Restful API" src="https://cdn-images-1.medium.com/max/871/1*d2zLEjERsrs1Rzk_95QU9A.png">
   </a>
-  
 </p>
 
+----
+## Contens
+* [Prerequiste](#prerequiste)
+* [Documentation](#documentation)
+## prerequiste
+- Node.js - Download and Install [Node.js](https://nodejs.org/en/) with [NVM](https://github.com/creationix/nvm) (Node Version Manager) - Simple bash script to manage multiple active node.js versions.
+- MySQL - Download and Install [MySQL](https://www.mysql.com/downloads/) - Make sure it's running on the default port.
+- Postman - Download and Install [Postman](https://www.getpostman.com/downloads) - Implementation with postman latest version.
 
-
-# inventory-app-js-backend
+## Documentation
+### Products Routes
