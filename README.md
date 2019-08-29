@@ -48,11 +48,31 @@ $ npm start
 ```
 
 ## Documentation
+
 ### Products Routes
 #### GET Request
-- "/products" => display all products, with default pagination {page:1, limit:10}. Query params:
-  - "search" -> display all products with name product that constains the keyword, 
+- "/products" => displays all products, with default pagination {page:1, limit:10}. Query params:
+  - "search" -> displays all products with name product that constains the keyword, 
   - "sortBy" -> its value is name of column you want to sort,
   - "sort" -> its filtering your ascending or descending,
   - "limit" -> number of products displayed in a page (default 10),
   - "page" -> page to display (default 1).
+- "/products/{name}" = search products by name and displays all products that contains the name in the search
+
+#### POST Request
+- "/products" => Inserting a product to database. data required = name, description, image, id_category, quantity
+    - before entering product data, it's insert data categories, because id_category is related to the category table,
+	  - note = image is the url to the image, not the actual image.
+  
+#### PATCH Request
+- "/products/update/{id_product}" => Updating a product in database. data required = id_product, name, description, image, id_category, quantity.
+- "/product/{id_product}" => Choose products with id_product to add and reduce the quantity of these products.
+
+#### DELETE Request
+- "/prducts/{id_product}" => Deleting a product in database. data required = id_product.
+
+
+
+ 
+
+
