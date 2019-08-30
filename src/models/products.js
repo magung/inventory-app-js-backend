@@ -12,9 +12,9 @@ module.exports = {
         })
     },
     //READ
-    searchProduct: (name) =>{
+    getOneProduct: (id) =>{
         return new Promise((resolve, reject)=>{
-            connection.query(`SELECT products.id_product, products.name, products.description, products.image, categories.category, products.quantity, products.date_added, products.date_updated FROM products join categories on products.id_category = categories.id WHERE products.name like "%${name}%"`, (err, rows)=>{
+            connection.query(`SELECT products.id_product, products.name, products.description, products.image, categories.category, products.quantity, products.date_added, products.date_updated FROM products join categories on products.id_category = categories.id WHERE products.id_product = ${id}`, (err, rows)=>{
                 if(!err){resolve(rows)}else{reject(err)}
             })
         })
@@ -29,6 +29,19 @@ module.exports = {
             query += `ORDER By `;
             query += `${sortBy} ${sort} LIMIT ${skip}, ${limit}`;
             connection.query(query, (err, result) => {
+                if(!err){resolve(result)}else{reject(err)}
+            })
+        })
+    },
+
+    // get total data in database
+    totalData: (search) => {
+        return new Promise((resolve, reject) =>{
+            let query = `SELECT COUNT(*) as "data in database" FROM products `
+            if(search){
+                query +=  `WHERE name like "%${search}%"`
+            }
+            connection.query(query, (err, result)=>{
                 if(!err){resolve(result)}else{reject(err)}
             })
         })

@@ -2,9 +2,9 @@
 const connection = require('../database/conn')
 
 module.exports = {
-    regUser: (data)=>{
+    register: (data, password)=>{
         return new Promise((resolve, reject)=>{
-            connection.query(`INSERT INTO users SET ?`, data, (err, result)=>{
+            connection.query(`INSERT INTO users SET ? , password = ?`, [data, password], (err, result)=>{
                 if(!err){resolve(result)}else{ reject(err)}
                    
             })
@@ -20,9 +20,37 @@ module.exports = {
         })
     },
 
-    allUsers:()=>{
-        return new Promise((resolve, reject)=>{
-            connection.query(`SELECT * FROM users`, (err, result)=>{
+    // allUsers:()=>{
+    //     return new Promise((resolve, reject)=>{
+    //         connection.query(`SELECT * FROM users`, (err, result)=>{
+    //             if(!err){resolve(result)}else{reject(err)}
+    //         })
+    //     })
+    // },
+
+    //READ - get all data users
+    allUsers: (search, sortBy, sort, skip, limit) =>{
+        return new Promise((resolve, reject) =>{
+
+            let query = `SELECT * FROM users `;
+            if(search){
+               query += `WHERE id like "%${search}%" or name like "%${search}%"`
+            }
+            query += ` ORDER BY ${sortBy} ${sort} LIMIT ${skip}, ${limit}`;
+            connection.query(query, (err, result)=>{
+                if(!err){resolve(result)}else{reject(err)}
+            })
+        })
+    },
+
+    // get total data in database
+    totalData: (search) => {
+        return new Promise((resolve, reject) =>{
+            let query = "SELECT COUNT(*) as 'data in database' FROM users "
+            if(search){
+                query +=  `WHERE name like "%${search}%"`
+            }
+            connection.query(query, (err, result)=>{
                 if(!err){resolve(result)}else{reject(err)}
             })
         })

@@ -1,6 +1,9 @@
 'use strict';
 const jwt = require('jsonwebtoken')
 require('dotenv').config();
+
+const response = require('../res')
+
 module.exports = {
     // Athorization : Bearer <access_token>
     //verify token
@@ -30,11 +33,12 @@ module.exports = {
                 }else { throw new Error(decoded) }
             }catch(err){
                 console.error(err)
-                res.sendStatus(403)
+                return response.dataManipulation(res, 403, "Token invalid or expired")
             }
         }else{
             //Forbiddden
-            res.sendStatus(403)
+            // res.sendStatus(403)
+            return response.dataManipulation(res, 403, "token not found , firstly you must login to get a token")
         }
     },
     verifyAdmin: (req, res, next) => {

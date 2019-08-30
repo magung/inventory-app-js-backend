@@ -31,17 +31,19 @@ module.exports = {
             name : req.body.name,
             username : req.body.username,
             email : req.body.email,
-            password : req.body.password,
+            //password : req.body.password,
             level: 'regular'
         }
 
-        data.password = hash(data.password)
+        const password = hash(req.body.password);
+
+        
 
         if(!isFormFalid(data)){
             return response.dataManipulation(res, 200, "Data not valid")
         }
 
-        modelUsers.regUser(data)
+        modelUsers.register(data, password)
         .then(result=>{
             data.id = result.id
             return response.dataManipulation(res, 200, "Success register user", data)
@@ -51,23 +53,23 @@ module.exports = {
             return response.dataManipulation(res, 201, "Failed register user")
         })
     },
-
+    // REGISTER for admin
     regAdmin: (req, res)=>{
         const data = {
             name : req.body.name,
             username : req.body.username,
             email : req.body.email,
-            password : req.body.password,
+            //password : req.body.password,
             level: 'admin'
         }
-
-        data.password = hash(data.password)
+        const password = hash(req.body.password);
+        //data.password = hash(data.password)
 
         if(!isFormFalid(data)){
             return response.dataManipulation(res, 200, "Data not valid")
         }
 
-        modelUsers.regUser(data)
+        modelUsers.register(data, password)
         .then(result=>{
             data.id = result.id
             return response.dataManipulation(res, 200, "Success register admin", data)
@@ -80,10 +82,33 @@ module.exports = {
 
     // READ - get all users
     
+    // allUsers:(req, res)=>{
+    //     modelUsers.allUsers()
+    //     .then(result=>res.json(result))
+    //     .catch(err=>console.log(err))
+    // },
+
     allUsers:(req, res)=>{
-        modelUsers.allUsers()
-        .then(result=>res.json(result))
-        .catch(err=>console.log(err))
+        const sortBy = req.query.sortBy || 'id';
+		const sort = req.query.sort || 'ASC';
+		const limit = parseInt(req.query.limit) || 10;
+        const page = req.query.page || 1;
+        const skip = (parseInt(page)-1)* limit;
+        const search = req.query.search;
+        let total =''
+        modelUsers.totalData(search)
+        .then(result => {
+             total = result
+        })
+        .catch(err => console.log(err) );
+        modelUsers.allUsers(search, sortBy, sort, skip, limit, total)
+        .then(result => {
+           
+            if(result.length !== 0) return response.getDataWithTotals(res, 200, result, result.length, page, total )
+			else return response.getDataResponse(res, 404, null, null, null, "Data not Found")
+        })
+        .catch(err => console.log(err))
+        
     },
 
     //LOGIN
@@ -106,11 +131,11 @@ module.exports = {
                         level: result[0].level
                     }
     
-                    jwt.sign(load, process.env.JWT_SECRET,{expiresIn: '20m'}, (err, token)=>{
+                    jwt.sign(load, process.env.JWT_SECRET,{expiresIn: process.env.JWT_EXP}, (err, token)=>{
                         if(!err){
                             res.json({
                                 dataUser:load,
-                                token: `Baerer ${token}`})
+                                token: `Bearer ${token}`})
                         }else{console.log(err)}
                     })
                 }else{

@@ -2,7 +2,7 @@
 const express = require('express')
 const Route = express.Router();
 
-var usersController = require('../controller/usersController')
+var usersController = require('../controllers/users')
 var Auth = require('../helpers/auth')
 
 Route

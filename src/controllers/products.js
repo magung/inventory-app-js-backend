@@ -33,23 +33,32 @@ module.exports = {
 	
 	//READ
 	allProducts:(req, res)=>{
-		let total = ''
+		
 		var sortBy = req.query.sortBy || 'id';
 		var sort = req.query.sort || 'ASC';
 		var search = req.query.search
 
-		if(search){
-		connection.query(`SELECT COUNT(*) as total_data FROM products WHERE name like "%${search}%"`, (err,result)=>{
-			if(!err){
-				 total = result
-			}
-		})}else{
-			connection.query(`SELECT COUNT(*) as total_data FROM products `, (err,result)=>{
-				if(!err){
-					 total = result
-				}})
-		}
+		// //GET total data in database
+		// if(search){
+		// connection.query(`SELECT COUNT(*) as total_data FROM products WHERE name like "%${search}%"`, (err,result)=>{
+		// 	if(!err){
+		// 		 total = result
+		// 	}
+		// })}else{
+		// 	connection.query(`SELECT COUNT(*) as total_data FROM products `, (err,result)=>{
+		// 		if(!err){
+		// 			 total = result
+		// 		}})
+		// }
 
+		let total =''
+        modelProduct.totalData(search)
+        .then(result => {
+             total = result
+		})
+		.catch(err => console.log(err))
+
+		//PAGINATION
 		if((isNaN(Number(req.query.page)) === false && isNaN(Number(req.query.limit)) === false) || !req.query.page || !req.query.limit){
 			var limit = Number(req.query.limit) || 10;
 			var page = req.query.page || 1;
@@ -67,11 +76,11 @@ module.exports = {
 	
 	},
 	
-	//READ
-	searchProducts:function(req,res){
-		const name = req.params.name;
+	// search and get one data product by id
+	getOneProduct:function(req,res){
+		const id = req.params.id;
 		
-		modelProduct.searchProduct(name)
+		modelProduct.getOneProduct(id)
 		.then(result=>{
 			if(result.length !== 0) return response.ok(result, res)
 			else return response.dataManipulation(res, 404,"Data Product Not Found")
@@ -85,21 +94,21 @@ module.exports = {
 	//UPDATE
 	updateProduct:(req,res)=>{
 		
-		 const id_product = req.params.id_product
+		 const id_product = req.body.id_product
 		 const data = {
 			name:req.body.name,
 			description: req.body.description,
 			image: req.body.image,
 			id_category: req.body.id_category,
 			quantity: req.body.quantity,
-			date_updated: new Date()
+		 	date_updated: new Date()
 		}
 		
 		modelProduct.updateProduct(id_product, data)
 		.then(result => {
 			data.id_product = id_product
 			if(result.affectedRows !== 0) return response.dataManipulation(res, 200, 'Success updating product', data )
-			else return response.dataManipulation(res, 200, "Failed updated")
+			else return response.dataManipulation(res, 200, "Failed updating data or Data not Found")
 		})
 		.catch(err => {
 			console.log(err)
@@ -118,7 +127,8 @@ module.exports = {
 		})
 		.catch(err =>{
 			console.log(err)
-			return response.dataManipulation(res, 500, err)
+			return response.dataManipulation(res, 500,"Internal Server Error")
+			
 		})
 	},
 

@@ -6,7 +6,7 @@ const modelCategories = require('../models/categories')
 //CRUD Categories
 module.exports = {
 
-    //CREATE
+    //CREATE - insert data category to database
     insertCategories: (req, res) =>{
         const data = {
             id : req.body.id,
@@ -21,11 +21,12 @@ module.exports = {
         })
         .catch(err => {
             console.log(err)
-            response.dataManipulation(res, 400, "Failed to insert category")
+            response.dataManipulation(res, 400, "Failed to insert category or ID already exists")
         })
     },
 
-    //READ
+    //READ data categories
+    // sortBy || sort || limit || page || search by name
     getCategories:(req, res)=>{
         const sortBy = req.query.sortBy || 'id';
 		const sort = req.query.sort || 'ASC';
@@ -34,16 +35,23 @@ module.exports = {
         const skip = (parseInt(page)-1)* limit;
         const search = req.query.search;
 
-        modelCategories.getCategories(search, sortBy, sort, skip, limit)
+        let total =''
+        modelCategories.totalData(search)
         .then(result => {
-            if(result.length !== 0) return response.getDataResponse(res, 200, result, result.length, page )
+             total = result
+        })
+        
+        .catch(err => console.log(err) );
+        modelCategories.getCategories(search, sortBy, sort, skip, limit, total)
+        .then(result => {
+            if(result.length !== 0) return response.getDataWithTotals(res, 200, result, result.length, page, total )
 			else return response.getDataResponse(res, 404, null, null, null, "Data not Found")
         })
         .catch(err => console.log(err))
     },
 
-    // READ - get one category search by ID or by NAME
-    searchCategory: (req, res)=>{
+    // READ - get one category by id
+    getOneCategory: (req, res)=>{
         const id = req.params.id;
         modelCategories.searchCategory(id)
         .then(result => {
@@ -65,7 +73,7 @@ module.exports = {
         }
         modelCategories.updateCategory(id, data)
         .then(result => {
-            data.id = id
+            //data.id = id
             if(result.affectedRows !== 0) return response.dataManipulation(res, 200, "Succes updating category ", data)
             else return response.dataManipulation(res, 201, "Failed to update category")
         })

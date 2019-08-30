@@ -2,7 +2,7 @@
 const express = require('express')
 const Route = express.Router();
 
-var todoList = require('../controller/controller')
+var todoList = require('../controllers')
 
 Route
  .get('/', todoList.index)
