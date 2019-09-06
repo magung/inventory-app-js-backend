@@ -9,16 +9,16 @@ module.exports = {
     //verify token
     verifyToken: (req, res, next)=>{
         //get auth header value
-        const bearerHeader = req.headers['authorization'];
+        const token = req.headers['authorization'];
         //check if bearer is undefined
-        if(typeof bearerHeader !== 'undefined'){
+        if(typeof token !== 'undefined'){
             //split at the space
-            const bearer = bearerHeader.split(' ')
-            // get token from array
-            const bearerToken = bearer[1];
-            // set the token 
-            const token = bearerToken
-            //next middleware
+            // const bearer = bearerHeader.split(' ')
+            // // get token from array
+            // const bearerToken = bearer[1];
+            // // set the token 
+            // const token = bearerToken
+            // //next middleware
             
             try{
                 const decoded = jwt.verify(token, process.env.JWT_SECRET)

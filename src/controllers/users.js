@@ -34,15 +34,11 @@ module.exports = {
             //password : req.body.password,
             level: 'regular'
         }
-
         const password = hash(req.body.password);
-
-        
 
         if(!isFormFalid(data)){
             return response.dataManipulation(res, 200, "Data not valid")
         }
-
         modelUsers.register(data, password)
         .then(result=>{
             data.id = result.id
@@ -50,8 +46,20 @@ module.exports = {
         })
         .catch(err=>{
             console.log(err)
-            return response.dataManipulation(res, 201, "Failed register user")
+            return response.dataManipulation(res, 201, "Failed register , username or email already exist")
         })
+        
+        
+        // modelUsers.userReady(data.username)
+        // .then(result =>{
+        //     console.log('username already')
+        //     return response.dataManipulation(res, 201, "email or username already exists")
+        // })
+        // .catch(err => {
+            
+        // })
+
+        
     },
     // REGISTER for admin
     regAdmin: (req, res)=>{
@@ -76,7 +84,7 @@ module.exports = {
         })
         .catch(err=>{
             console.log(err)
-            return response.dataManipulation(res, 201, "Failed register admin")
+            return response.dataManipulation(res, 201, "Failed register, username or email already exist")
         })
     },
 
@@ -135,7 +143,7 @@ module.exports = {
                         if(!err){
                             res.json({
                                 dataUser:load,
-                                token: `Bearer ${token}`})
+                                token: `${token}`})
                         }else{console.log(err)}
                     })
                 }else{

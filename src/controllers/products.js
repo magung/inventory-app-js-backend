@@ -54,9 +54,10 @@ module.exports = {
 		let total =''
         modelProduct.totalData(search)
         .then(result => {
-             total = result
+            total = result[0]
 		})
 		.catch(err => console.log(err))
+
 
 		//PAGINATION
 		if((isNaN(Number(req.query.page)) === false && isNaN(Number(req.query.limit)) === false) || !req.query.page || !req.query.limit){
@@ -66,10 +67,12 @@ module.exports = {
 		}else{
 			res.send("Wrong Value")
 		}
-		
+		var total_page = Number(total.daata_in_database);
+
+
 		modelProduct.allProduct(search, sortBy, sort, skip, limit)
 		.then(result => {
-			if(result.length !== 0) return response.getDataWithTotals(res, 200, result, result.length, page, total )
+			if(result.length !== 0) return response.getDataWithTotals(res, 200, result, result.length, page, total_page , total )
 			else return response.getDataResponse(res, 404, null, null, null, "Data not Found")
 		})
 		.catch(err => console.log(err))
@@ -94,12 +97,12 @@ module.exports = {
 	//UPDATE
 	updateProduct:(req,res)=>{
 		
-		 const id_product = req.body.id_product
+		 const id_product = req.params.id_product
 		 const data = {
 			name:req.body.name,
 			description: req.body.description,
 			image: req.body.image,
-			id_category: req.body.id_category,
+			id_category: req.body.category,
 			quantity: req.body.quantity,
 		 	date_updated: new Date()
 		}

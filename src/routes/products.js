@@ -11,7 +11,7 @@ Route
  .get('/:id',productController.getOneProduct)
  .post('/',Auth.verifyToken, productController.insertProducts)
  .delete('/:id_product',Auth.verifyToken, productController.deleteProduct)
- .put('/',Auth.verifyToken, productController.updateProduct)
- .patch('/:id_product',Auth.verifyToken, productController.AddandReduceProduct)
+ .put('/:id_product',Auth.verifyToken, productController.updateProduct)
+ .patch('/:id_product', productController.AddandReduceProduct)
 
  module.exports = Route

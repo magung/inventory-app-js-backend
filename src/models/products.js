@@ -37,7 +37,7 @@ module.exports = {
     // get total data in database
     totalData: (search) => {
         return new Promise((resolve, reject) =>{
-            let query = `SELECT COUNT(*) as "data in database" FROM products `
+            let query = `SELECT COUNT(*) as data_in_database FROM products `
             if(search){
                 query +=  `WHERE name like "%${search}%"`
             }

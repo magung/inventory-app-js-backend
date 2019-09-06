@@ -4,14 +4,32 @@ const connection = require('../database/conn')
 module.exports = {
     register: (data, password)=>{
         return new Promise((resolve, reject)=>{
-            connection.query(`INSERT INTO users SET ? , password = ?`, [data, password], (err, result)=>{
-                if(!err){resolve(result)}else{ reject(err)}
-                   
-            })
+            //validation for email or username if already exist
+            let regis = `INSERT INTO users SET ? , password = ?`;
+            let qemail = `SELECT * FROM users WHERE email = ?`;
+            let qusername = `SELECT * FROM users WHERE username = ?`;
 
+            connection.query(qemail, data.email, (err, result)=>{
+                if(result.length > 0){
+                    reject(err),
+                    console.log(err)
+                }
+                else{
+                    connection.query(qusername, data.username, (err, result)=>{
+                        if(result.length > 0){
+                            reject(err)
+                        }else{
+                            connection.query(regis, [data, password], (err, result)=>{
+                                if(!err){resolve(result)}else{ reject(err)}
+                            })
+                        }
+                    })
+                }
+            })
+            
         })
     },
-
+   
     loginUser:(email)=>{
         return new Promise((resolve, reject)=>{
             connection.query(`SELECT * FROM users WHERE email = ?`, [email], (err, result)=>{
